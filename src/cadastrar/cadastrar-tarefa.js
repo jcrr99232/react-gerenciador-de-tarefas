@@ -51,7 +51,7 @@ function CadastrarTarefa() {
                             required 
                             value={tarefa}
                             onChange={handleTxtTarefa}
-                            data-testeid="txt-tarefa" />
+                            data-testid="txt-tarefa" />
                         <Form.Control.Feedback type="invalid">
                             A tarefa deve conter ao menos 5 caracteres
                     </Form.Control.Feedback>

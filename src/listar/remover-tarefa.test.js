@@ -1,47 +1,47 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ConcluirTarefa from './concluir-tarefa';
+import RemoverTarefa from './remover-tarefa';
 import Tarefa from '../models/tarefa.model';
 import { render, fireEvent } from '@testing-library/react';
-import { dom } from '@fortawesome/fontawesome-svg-core';
+import { library } from '@fortawesome/fontawesome-svg-core';
 import '@testing-library/jest-dom/extend-expect';
+import { get } from 'hookrouter';
 
-describe('Teste de componente de conclusão de tarefas', () => {
+describe('Teste do componente de remoção de tarefas', () => {
 
-    const nomeTarefa = 'Tarefa de teste';
+    const nomeTarefa = 'Tarefa de Teste';
     const tarefa = new Tarefa(1, nomeTarefa, false);
 
     it('deve renderizar o componente sem erros', () => {
         const div = document.createElement('div');
         ReactDOM.render(
-            <ConcluirTarefa
+            <RemoverTarefa
                 tarefa={tarefa}
                 recarregarTarefas={() => false} />, div);
-        ReactDOM.unmountComponentAtNode(div);
-        
+        ReactDOM.unmountComponentAtNode(div);           
     });
 
     it('deve exibir a modal', () => {
         const { getByTestId } = render(
-            <ConcluirTarefa
-            tarefa={tarefa}
-            recarregarTarefas={() => false} />    
+        <RemoverTarefa 
+        tarefa={tarefa}
+        recarregarTarefas={() => false} />
         );
         fireEvent.click(getByTestId('btn-abrir-modal'));
         expect(getByTestId('modal')).toHaveTextContent(nomeTarefa);
     });
 
-    it('deve concluir uma tarefa', () => {
+    it('deve remover uma tarefa', () => {
         localStorage['tarefas'] = JSON.stringify([tarefa]);
         const { getByTestId } = render(
-            <ConcluirTarefa
+            <RemoverTarefa
             tarefa={tarefa}
             recarregarTarefas={() => false} />
         );
         fireEvent.click(getByTestId('btn-abrir-modal'));
-        fireEvent.click(getByTestId('btn-concluir'));
+        fireEvent.click(getByTestId('btn-remover'));
         const tarefasDb = JSON.parse(localStorage['tarefas']);
-        expect(tarefasDb[0].concluida).toBeTruthy();
+        expect(tarefasDb.length).toBe(0);
     });
 
 });
